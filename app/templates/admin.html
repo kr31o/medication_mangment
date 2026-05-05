@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title or 'لوحة الإدارة' }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="side-brand"><div class="brand-icon">🛡️</div><div><b>MedTrack</b><br><small id="admin-user">مدير</small></div></div>
+    <nav class="nav">
+      <button class="active" data-page="overview" onclick="showPage('overview')">📊 الملخص</button>
+      <button data-page="patients" onclick="showPage('patients')">👥 المرضى</button>
+      <button data-page="meds" onclick="showPage('meds')">💊 الأدوية</button>
+      <button data-page="warning" onclick="showPage('warning')">📣 تحذير</button>
+    </nav>
+    <button class="btn logout" onclick="Auth.logout()">تسجيل الخروج</button>
+  </aside>
+
+  <main class="main">
+    <div class="mobilebar"><button class="btn ghost sm" onclick="toggleSidebar()">☰</button><b>الإدارة</b><button class="btn danger sm" onclick="Auth.logout()">خروج</button></div>
+
+    <section id="page-overview" class="page active">
+      <div class="header"><div class="title"><h1>ملخص النظام</h1><p>متابعة المرضى وكتالوج الأدوية والتنبيهات.</p></div><div class="actions"><button class="btn secondary" onclick="loadOverview()">تحديث</button><button class="btn primary" onclick="openMedModal()">إضافة دواء</button></div></div>
+      <div class="grid grid-4">
+        <div class="card stat"><div class="icon">👥</div><div id="s-patients" class="num">0</div><div class="lbl">مرضى</div></div>
+        <div class="card stat"><div class="icon">✅</div><div id="s-active-patients" class="num">0</div><div class="lbl">نشطون</div></div>
+        <div class="card stat"><div class="icon">💊</div><div id="s-meds" class="num">0</div><div class="lbl">أدوية</div></div>
+        <div class="card stat"><div class="icon">📦</div><div id="s-stock" class="num">0</div><div class="lbl">كميات المرضى</div></div>
+      </div>
+    </section>
+
+    <section id="page-patients" class="page">
+      <div class="header"><div class="title"><h1>المرضى</h1><p>بحث، تعديل، تعطيل وتفعيل.</p></div><div class="search"><span>🔎</span><input id="patient-q" oninput="searchPatients()" placeholder="اسم أو بريد أو هاتف"></div></div>
+      <div class="card"><div id="patients-table"></div><div id="patients-pages"></div></div>
+    </section>
+
+    <section id="page-meds" class="page">
+      <div class="header"><div class="title"><h1>كتالوج الأدوية</h1><p>إضافة دواء مع تصنيف من القائمة بدون إدارة كمية للمخزون.</p></div><div class="actions"><div class="search"><span>🔎</span><input id="med-q" oninput="searchMeds()" placeholder="بحث عن دواء"></div><button class="btn primary" onclick="openMedModal()">إضافة دواء</button></div></div>
+      <div class="card"><div id="meds-table"></div><div id="meds-pages"></div></div>
+    </section>
+
+    <section id="page-warning" class="page">
+      <div class="header"><div class="title"><h1>إرسال تحذير</h1><p>إشعار واضح يظهر للمريض.</p></div></div>
+      <div class="card" style="max-width:760px"><div id="warning-error"></div><div id="warning-success"></div><div class="form-group"><label class="label">المريض</label><select id="warning-patient" class="input"></select></div><div class="form-group"><label class="label">العنوان</label><input id="warning-title" class="input"></div><div class="form-group"><label class="label">الرسالة</label><textarea id="warning-message" class="input"></textarea></div><button id="btn-warning" class="btn primary" onclick="sendWarning()">إرسال التحذير</button></div>
+    </section>
+
+    <section id="page-detail" class="page">
+      <div class="header"><div class="title"><h1 id="detail-name">تفاصيل المريض</h1><p id="detail-email"></p></div><div id="detail-actions" class="actions"></div></div>
+      <div class="grid grid-3"><div class="card"><div class="card-title">بيانات المريض</div><div id="detail-info"></div></div><div class="card span-2"><div class="card-title">الأدوية والجداول</div><div id="detail-meds"></div></div></div>
+    </section>
+  </main>
+</div>
+
+<div id="modal-med" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="med-modal-title">إضافة دواء</h2><button class="x" onclick="UI.close('modal-med')">✕</button></div>
+    <div id="med-error"></div>
+    <input type="hidden" id="med-id">
+    <div class="form-row"><div class="form-group"><label class="label">اسم الدواء</label><input id="med-name" class="input"></div><div class="form-group"><label class="label">التصنيف</label><select id="med-category" class="input"></select></div></div>
+    <div class="form-row"><div class="form-group"><label class="label">الشكل</label><select id="med-form" class="input"><option value="tablet">أقراص</option><option value="capsule">كبسولات</option><option value="syrup">شراب</option><option value="injection">حقن</option><option value="drop">قطرات</option><option value="ointment">مرهم</option><option value="spray">بخاخ</option><option value="other">أخرى</option></select></div><div class="form-group"><label class="label">التركيز</label><input id="med-strength" class="input"></div></div>
+    <div class="form-group"><label class="label">الحالة</label><select id="med-active" class="input"><option value="true">نشط</option><option value="false">محذوف من الكتالوج</option></select></div>
+    <div class="form-group"><label class="label">الوصف</label><textarea id="med-description" class="input"></textarea></div>
+    <button id="btn-save-med" class="btn primary full" onclick="saveMedication()">حفظ الدواء</button>
+  </div>
+</div>
+
+<div id="modal-patient" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>تعديل المريض</h2><button class="x" onclick="UI.close('modal-patient')">✕</button></div>
+    <div id="patient-error"></div>
+    <input type="hidden" id="patient-id">
+    <div class="form-group"><label class="label">الاسم</label><input id="patient-name" class="input"></div>
+    <div class="form-group"><label class="label">الهاتف</label><input id="patient-phone" class="input"></div>
+    <button id="btn-save-patient" class="btn primary full" onclick="savePatient()">حفظ المريض</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

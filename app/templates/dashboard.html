@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title or 'لوحة المريض' }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="side-brand"><div class="brand-icon">💊</div><div><b>MedTrack</b><br><small id="side-user">مريض</small></div></div>
+    <nav class="nav">
+      <button class="active" data-page="overview" onclick="showPage('overview')">🏠 الملخص</button>
+      <button data-page="meds" onclick="showPage('meds')">💊 أدويتي</button>
+      <button data-page="history" onclick="showPage('history')">📋 سجل الجرعات</button>
+      <button data-page="notifications" onclick="showPage('notifications')">🔔 التنبيهات</button>
+    </nav>
+    <button class="btn logout" onclick="Auth.logout()">تسجيل الخروج</button>
+  </aside>
+
+  <main class="main">
+    <div class="mobilebar"><button class="btn ghost sm" onclick="toggleSidebar()">☰</button><b>MedTrack</b><button class="btn danger sm" onclick="Auth.logout()">خروج</button></div>
+
+    <section id="page-overview" class="page active">
+      <div class="header">
+        <div class="title"><h1 id="welcome">أهلاً بك</h1><p>الجرعات لا تُؤكد إلا من إشعار الجرعة. التنبيه يصل عند الوقت الذي تحدده في الجدول.</p></div>
+        <div class="actions"><button class="btn secondary" onclick="refreshAll()">تحديث</button><button class="btn primary" onclick="openAddMed()">إضافة دواء</button></div>
+      </div>
+      <div class="grid grid-4">
+        <div class="card stat"><div class="icon">💊</div><div id="st-meds" class="num">0</div><div class="lbl">أدوية نشطة</div></div>
+        <div class="card stat"><div class="icon">🔔</div><div id="st-unread" class="num">0</div><div class="lbl">تنبيهات جديدة</div></div>
+        <div class="card stat"><div class="icon">📦</div><div id="st-low" class="num">0</div><div class="lbl">مخزون منخفض</div></div>
+        <div class="card stat"><div class="icon">✅</div><div id="st-adherence" class="num">0%</div><div class="lbl">الالتزام</div></div>
+      </div>
+      <br>
+      <div class="grid grid-2">
+        <div class="card"><div class="card-title">جرعات اليوم</div><p class="card-sub">ستظهر أزرار التأكيد داخل التنبيهات عند وصولها.</p><div id="today-list" class="list"></div></div>
+        <div class="card"><div class="card-title">آخر التنبيهات</div><div id="overview-notifs" class="list"></div></div>
+      </div>
+    </section>
+
+    <section id="page-meds" class="page">
+      <div class="header"><div class="title"><h1>أدويتي</h1><p>تعديل الكمية الشخصية، إيقاف/تفعيل، وتحديد وقت كل جرعة.</p></div><button class="btn primary" onclick="openAddMed()">إضافة دواء</button></div>
+      <div id="med-cards" class="med-grid"></div>
+    </section>
+
+    <section id="page-history" class="page">
+      <div class="header"><div class="title"><h1>سجل الجرعات</h1><p>عرض كامل للجرعات المؤكدة والفائتة.</p></div></div>
+      <div class="card"><div id="history-table"></div><div id="history-pages"></div></div>
+    </section>
+
+    <section id="page-notifications" class="page">
+      <div class="header"><div class="title"><h1>التنبيهات</h1><p>إشعار الجرعة يحتوي أزرار تأكيد أو فائتة.</p></div><button class="btn secondary" onclick="loadNotifications(1)">تحديث</button></div>
+      <div class="card"><div id="notif-list" class="list"></div><div id="notif-pages"></div></div>
+    </section>
+  </main>
+</div>
+
+<div id="modal-add" class="modal">
+  <div class="modal-card wide">
+    <div class="modal-head"><h2>إضافة دواء</h2><button class="x" onclick="UI.close('modal-add')">✕</button></div>
+    <div class="alert info">اختر الدواء من البحث أو التصنيف، ثم أدخل الكمية الموجودة لديك.</div>
+    <div id="add-error"></div>
+    <input type="hidden" id="selected-med">
+    <div class="form-row">
+      <div class="form-group"><label class="label">بحث</label><input id="cat-search" class="input" oninput="renderCatalog()" placeholder="اسم الدواء أو التصنيف"></div>
+      <div class="form-group"><label class="label">التصنيف</label><select id="cat-category" class="input" onchange="renderCatalog()"></select></div>
+    </div>
+    <div id="cat-chips" class="chips"></div>
+    <div id="catalog" class="catalog-grid"></div>
+    <div id="selected-box" class="selected-box">لم يتم اختيار دواء بعد.</div>
+    <div class="form-row">
+      <div class="form-group"><label class="label">الكمية للمريض</label><input id="pm-qty" class="input" type="number" min="0" step="0.01"></div>
+      <div class="form-group"><label class="label">حد تنبيه النفاد</label><input id="pm-threshold" class="input" type="number" min="0" step="0.01"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="label">تاريخ البداية</label><input id="pm-start" class="input" type="date"></div>
+      <div class="form-group"><label class="label">تاريخ النهاية اختياري</label><input id="pm-end" class="input" type="date"></div>
+    </div>
+    <div class="form-group"><label class="label">ملاحظات</label><textarea id="pm-notes" class="input"></textarea></div>
+    <button id="btn-add-med" class="btn primary full" onclick="submitAddMed()">حفظ الدواء</button>
+  </div>
+</div>
+
+<div id="modal-edit" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>تعديل الدواء</h2><button class="x" onclick="UI.close('modal-edit')">✕</button></div>
+    <div id="edit-error"></div>
+    <input type="hidden" id="edit-pm-id">
+    <div class="form-row">
+      <div class="form-group"><label class="label">الكمية الحالية</label><input id="edit-qty" class="input" type="number" min="0" step="0.01"></div>
+      <div class="form-group"><label class="label">حد التنبيه</label><input id="edit-threshold" class="input" type="number" min="0" step="0.01"></div>
+    </div>
+    <div class="form-group"><label class="label">تاريخ النهاية</label><input id="edit-end" class="input" type="date"></div>
+    <div class="form-group"><label class="label">ملاحظات</label><textarea id="edit-notes" class="input"></textarea></div>
+    <button id="btn-edit-med" class="btn primary full" onclick="submitEditMed()">حفظ التعديل</button>
+  </div>
+</div>
+
+<div id="modal-activate" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>تفعيل دواء متوقف</h2><button class="x" onclick="UI.close('modal-activate')">✕</button></div>
+    <div class="alert info" id="activate-info"></div>
+    <div id="activate-error"></div>
+    <input type="hidden" id="activate-pm-id">
+    <div class="form-row">
+      <div class="form-group"><label class="label">الكمية الجديدة</label><input id="activate-qty" class="input" type="number" min="0" step="0.01"></div>
+      <div class="form-group"><label class="label">حد التنبيه</label><input id="activate-threshold" class="input" type="number" min="0" step="0.01"></div>
+    </div>
+    <button id="btn-activate-med" class="btn success full" onclick="submitActivateMed()">تفعيل الدواء</button>
+  </div>
+</div>
+
+<div id="modal-schedule" class="modal">
+  <div class="modal-card wide">
+    <div class="modal-head"><h2>جدول الجرعات</h2><button class="x" onclick="UI.close('modal-schedule')">✕</button></div>
+    <div class="alert info">اختر الفترة ووقت الجرعة. سيصل التنبيه مباشرة عند الوقت الذي تحدده.</div>
+    <div id="schedule-error"></div>
+    <input type="hidden" id="schedule-pm-id">
+    <div class="form-row">
+      <div class="form-group"><label class="label">تاريخ البداية</label><input id="schedule-start" class="input" type="date"></div>
+      <div class="form-group"><label class="label">نوع الجدول</label><select id="schedule-cont" class="input" onchange="toggleEnd()"><option value="true">مستمر</option><option value="false">حتى تاريخ محدد</option></select></div>
+    </div>
+    <div id="end-wrap" class="form-group" style="display:none"><label class="label">تاريخ النهاية</label><input id="schedule-end" class="input" type="date"></div>
+    <div class="form-group"><label class="label">الأيام</label><div class="day-grid" id="days"><label><input type="checkbox" value="sat">السبت</label><label><input type="checkbox" value="sun">الأحد</label><label><input type="checkbox" value="mon">الاثنين</label><label><input type="checkbox" value="tue">الثلاثاء</label><label><input type="checkbox" value="wed">الأربعاء</label><label><input type="checkbox" value="thu">الخميس</label><label><input type="checkbox" value="fri">الجمعة</label></div></div>
+    <div class="period-grid">
+      <div class="period-card">
+        <label><input id="period-morning" type="checkbox"> صباحًا</label>
+        <div class="form-row"><input id="morning-time" class="input" type="time"><input id="morning-dose" class="input" type="number" min="0.01" step="0.01" placeholder="الجرعة"><input id="morning-unit" class="input" value="حبة" placeholder="الوحدة"></div>
+      </div>
+      <div class="period-card">
+        <label><input id="period-evening" type="checkbox"> مساءً</label>
+        <div class="form-row"><input id="evening-time" class="input" type="time"><input id="evening-dose" class="input" type="number" min="0.01" step="0.01" placeholder="الجرعة"><input id="evening-unit" class="input" value="حبة" placeholder="الوحدة"></div>
+      </div>
+    </div>
+    <br>
+    <button id="btn-save-schedule" class="btn primary full" onclick="submitSchedule()">حفظ جدول الجرعات</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
