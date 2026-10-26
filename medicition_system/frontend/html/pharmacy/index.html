@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>الرئيسية · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/pharmacy/index.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <div class="hero">
+      <div>
+        <h1 id="name">صيدليتي</h1>
+        <p id="lead">أكمل ملف صيدليتك لتبدأ باستقبال الطلبات.</p>
+      </div>
+      <span id="status"></span>
+      <span class="floaty" style="--w: 110px; --a: #ffc857; --tilt: -28deg; --t: 8s; top: -18px; left: 30%"></span>
+      <span class="floaty" style="--w: 70px; --a: #ff8f78; --tilt: 24deg; --t: 6.5s; --d: -2s; bottom: -14px; left: 48%"></span>
+    </div>
+    <!-- صيدلية بلا نقطة خاصة على الخريطة -->
+    <div id="point-alert" class="section" hidden></div>
+    <!-- صيدلية لم تُعتمد بعد: ما يلزم لتبدأ -->
+    <div id="gate"></div>
+
+    <div id="content" hidden>
+      <div id="empty-stock" class="section" hidden></div>
+      <div class="grid grid--4 section" id="stats"></div>
+      <div class="split">
+        <section class="section">
+          <div class="section__head">
+            <h2>طلبات بانتظارك</h2>
+            <a class="btn btn--ghost btn--sm" href="/pharmacy/orders">الكل</a>
+          </div>
+          <div class="card" id="orders"></div>
+        </section>
+        <section class="section">
+          <div class="section__head">
+            <h2>مخزون منخفض</h2>
+            <a class="btn btn--ghost btn--sm" href="/pharmacy/inventory">المخزون</a>
+          </div>
+          <div class="card" id="low"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

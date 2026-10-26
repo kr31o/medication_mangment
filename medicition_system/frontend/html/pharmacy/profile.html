@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>ملف الصيدلية · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="/js/pharmacy/profile.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <div id="head"></div>
+    <div id="state"></div>
+    <!-- حالة الاعتماد: قيد المراجعة، مرفوضة، أو موقوفة -->
+    <div id="status-alerts" class="section" hidden></div>
+
+    <div id="layout" hidden>
+      <!-- بيانات الصيدلية ومكانها -->
+      <div class="card">
+        <div class="card__body stack" id="form">
+          <div class="grid grid--2">
+            <div class="field" data-field="name">
+              <label class="field__label" for="name">اسم الصيدلية<span class="field__req" aria-hidden="true">*</span></label>
+              <div class="field__control"><input id="name" name="name" class="input" required></div>
+              <span class="field__hint" data-hint=""></span>
+            </div>
+            <div class="field">
+              <label class="field__label" for="license">رقم الترخيص</label>
+              <div class="field__control"><input id="license" class="input" dir="ltr" placeholder="يظهر بعد إنشاء الملف" disabled readonly></div>
+              <span class="field__hint">يولّده النظام تلقائيًا ولا يُكتب باليد</span>
+            </div>
+          </div>
+          <div class="field" data-field="phone">
+            <label class="field__label" for="phone">هاتف الصيدلية<span class="field__req" aria-hidden="true">*</span></label>
+            <div class="field__control"><input id="phone" name="phone" class="input" dir="ltr" placeholder="+963944000000" required></div>
+            <span class="field__hint" data-hint="بالصيغة الدولية، يبدأ بـ &lrm;+963">بالصيغة الدولية، يبدأ بـ &lrm;+963</span>
+          </div>
+
+          <div class="place-box stack">
+            <div>
+              <h3>مكان الصيدلية</h3>
+              <p class="small soft">لكل صيدلية نقطتها الخاصة على الخريطة، وأنت من يحددها. منها يُحسب بُعد صيدليتك عن كل مريض.</p>
+            </div>
+            <div class="grid grid--2">
+              <div class="field" data-field="city">
+                <label class="field__label" for="city">المدينة أو المنطقة<span class="field__req" aria-hidden="true">*</span></label>
+                <select id="city" name="city" class="input" required></select>
+                <span class="field__hint" id="city-hint" data-hint="تنتقل الخريطة إليها لتحدد نقطتك">تنتقل الخريطة إليها لتحدد نقطتك</span>
+              </div>
+              <div class="field" data-field="address_line">
+                <label class="field__label" for="address_line">العنوان التفصيلي<span class="field__req" aria-hidden="true">*</span></label>
+                <div class="field__control"><input id="address_line" name="address_line" class="input" placeholder="الحي، الشارع، أقرب معلم" required></div>
+                <span class="field__hint" data-hint=""></span>
+              </div>
+            </div>
+
+            <div class="stack" style="--gap: 12px">
+              <div class="between">
+                <h4>نقطة الصيدلية على الخريطة<span class="field__req" aria-hidden="true">*</span></h4>
+                <button type="button" class="btn btn--soft btn--sm" id="locate" title="استعمله وأنت داخل الصيدلية"><i data-icon="locate_fixed" data-size="16"></i>موقعي الآن</button>
+              </div>
+              <div id="point-status"></div>
+              <div id="point-far" hidden></div>
+              <div class="map-box map-box--pick"><div id="map"></div></div>
+              <div class="inline-form">
+                <div class="field" id="paste-field">
+                  <label class="field__label" for="paste">أو الصق إحداثيات الصيدلية أو رابط موقعها</label>
+                  <div class="field__control"><input id="paste" class="input" dir="ltr" placeholder="33.510200, 36.291300"></div>
+                </div>
+                <button type="button" class="btn btn--outline" style="min-height: 48px" id="use-paste" disabled><i data-icon="clipboard_paste"></i>استخدام</button>
+              </div>
+              <!-- خارج الصف: نص تحت الحقل كان سيُنزل الزر عن مستوى الحقل -->
+              <p class="tiny muted" id="paste-note">من أي تطبيق خرائط على هاتفك: اضغط مطوّلًا على مكان الصيدلية وانسخ الرقمين، أو انسخ رابط «مشاركة الموقع».</p>
+            </div>
+            <div id="coordinates-error" hidden></div>
+          </div>
+
+          <div><button type="button" class="btn btn--primary" id="save">إنشاء ملف الصيدلية</button></div>
+        </div>
+      </div>
+
+      <!-- بعد إنشاء الملف: الوثائق وسجل حالة الاعتماد -->
+      <div id="side" hidden>
+        <section class="section">
+          <div class="section__head"><h2>الوثائق</h2></div>
+          <div class="card">
+            <div class="card__body stack">
+              <div class="inline-form">
+                <div class="field">
+                  <label class="field__label" for="document-type">نوع الوثيقة</label>
+                  <select id="document-type" class="input"></select>
+                </div>
+                <button type="button" class="btn btn--outline" style="min-height: 48px" id="upload"><i data-icon="upload"></i>رفع ملف</button>
+                <input type="file" id="file" hidden accept="application/pdf,image/png,image/jpeg">
+              </div>
+              <p class="tiny muted">PDF أو PNG أو JPEG حتى 5MB</p>
+              <div id="documents"></div>
+            </div>
+          </div>
+        </section>
+        <section class="section">
+          <div class="section__head"><h2>سجل الحالة</h2></div>
+          <div class="card"><div class="card__body" id="history"></div></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

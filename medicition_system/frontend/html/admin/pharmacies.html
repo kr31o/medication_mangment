@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>الصيدليات · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/admin/pharmacies.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <header class="page-head">
+      <div>
+        <h1>الصيدليات</h1>
+        <div class="page-head__sub">كل الصيدليات المسجلة في المنصة. افتح صيدلية لترى معلوماتها. الصيدلية لا تظهر للمرضى قبل اعتمادها</div>
+      </div>
+    </header>
+    <div id="tabs"></div>
+    <div class="card">
+      <div class="toolbar">
+        <div class="field">
+          <div class="field__control field__control--icon">
+            <span class="field__icon"><i data-icon="search"></i></span>
+            <input id="q" class="input input--sm input--search" aria-label="بحث في الصيدليات" placeholder="الاسم أو رقم الترخيص أو المدينة" autocomplete="off">
+          </div>
+        </div>
+      </div>
+      <div id="list"></div>
+      <div id="pager"></div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>المخزون · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/pharmacy/inventory.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <div id="gate"></div>
+    <div id="content" hidden>
+      <header class="page-head">
+        <div>
+          <h1>المخزون</h1>
+          <div class="page-head__sub">الكميات بالعلب. الكمية تتغير بحركة (توريد أو تسوية أو صرف) ولكل حركة سجل. الدواء الموقوف لا يراه المرضى.</div>
+        </div>
+        <div class="page-head__actions">
+          <button type="button" class="btn btn--primary" id="add"><i data-icon="plus"></i>إضافة أدوية</button>
+        </div>
+      </header>
+      <div class="card">
+        <div class="toolbar">
+          <div class="field">
+            <div class="field__control field__control--icon">
+              <span class="field__icon"><i data-icon="search"></i></span>
+              <input id="q" class="input input--sm input--search" aria-label="بحث في المخزون" placeholder="بحث باسم الدواء" autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <select id="category" class="input input--sm" aria-label="التصنيف"></select>
+          </div>
+          <label class="switch">
+            <input type="checkbox" role="switch" id="low-only">
+            <span class="switch__track"></span>
+            <span>المنخفض فقط</span>
+          </label>
+        </div>
+        <div id="list"></div>
+        <div id="pager"></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>المرضى · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/admin/patients.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <header class="page-head">
+      <div>
+        <h1>المرضى</h1>
+        <div class="page-head__sub">حسابات المرضى المسجلين في المنصة. الحساب الموقوف لا يدخل، ويرى صاحبه السبب في صفحة الدخول</div>
+      </div>
+    </header>
+    <div id="tabs"></div>
+    <div class="card">
+      <div class="toolbar">
+        <div class="field">
+          <div class="field__control field__control--icon">
+            <span class="field__icon"><i data-icon="search"></i></span>
+            <input id="q" class="input input--sm input--search" aria-label="بحث في المرضى" placeholder="الاسم أو البريد أو رقم الهاتف" autocomplete="off">
+          </div>
+        </div>
+      </div>
+      <!-- الأسماء تأتي من خدمة ملفات المرضى؛ إن لم ترد عُرضت الحسابات بلا أسماء -->
+      <div class="card__body" id="names-missing" hidden>
+        <div class="alert alert--warning" role="status">
+          <span class="alert__icon"><i data-icon="triangle_alert"></i></span>
+          <div class="alert__body">تعذّر جلب أسماء المرضى الآن. الحسابات معروضة ببريدها وهاتفها، والبحث بهما فقط؛ الإيقاف وإعادة التفعيل يعملان.</div>
+        </div>
+      </div>
+      <div id="list"></div>
+      <div id="pager"></div>
+    </div>
+  </main>
+</body>
+</html>

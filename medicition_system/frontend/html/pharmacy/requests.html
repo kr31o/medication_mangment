@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>طلبات للإدارة · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/pharmacy/requests.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <!-- صيدلية لم تُعتمد بعد: ما يلزم لتبدأ -->
+    <div id="gate"></div>
+    <!-- [قرار المستخدم] طلبات للإدارة: دواء ناقص أو دواء جديد، وردودها -->
+    <div id="content" hidden>
+      <header class="page-head">
+        <div>
+          <h1>طلبات للإدارة</h1>
+          <div class="page-head__sub">دواء لا تجده متوفرًا، أو دواء غير موجود في قائمة الأدوية؟ أبلغ الإدارة، ويصلك ردها إشعارًا.</div>
+        </div>
+        <div class="page-head__actions"><button type="button" class="btn btn--primary" id="new"><i data-icon="plus" data-size="18"></i>طلب جديد</button></div>
+      </header>
+      <div id="tabs"></div>
+      <div id="list"></div>
+      <div id="pager"></div>
+    </div>
+  </main>
+</body>
+</html>

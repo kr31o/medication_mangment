@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>ملفي الشخصي · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/patient/profile.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <header class="page-head">
+      <div>
+        <h1>ملفي الشخصي</h1>
+        <div class="page-head__sub">الاسم يظهر للصيدلية عند استلام طلبك</div>
+      </div>
+    </header>
+    <div id="state"></div>
+    <!-- لأول مرة: الملف غير موجود بعد -->
+    <div class="alert alert--info" role="status" id="first-time" hidden>
+      <span class="alert__icon"><i data-icon="info"></i></span>
+      <div class="alert__body">أكمل ملفك الشخصي لتتمكن من طلب الأدوية.</div>
+    </div>
+    <div class="card" id="card" style="max-width: 660px" hidden>
+      <div class="card__body">
+        <form class="stack" id="form" novalidate>
+          <div class="field" data-field="full_name">
+            <label class="field__label" for="full_name">الاسم الكامل<span class="field__req" aria-hidden="true">*</span></label>
+            <div class="field__control"><input id="full_name" name="full_name" class="input" autocomplete="name" required></div>
+            <span class="field__hint" data-hint=""></span>
+          </div>
+          <div class="grid grid--2">
+            <div class="field" data-field="date_of_birth">
+              <label class="field__label" for="date_of_birth">تاريخ الميلاد</label>
+              <div class="field__control"><input id="date_of_birth" name="date_of_birth" type="date" class="input"></div>
+              <span class="field__hint" data-hint="اختياري">اختياري</span>
+            </div>
+            <div class="field" data-field="gender">
+              <label class="field__label" for="gender">الجنس</label>
+              <select id="gender" name="gender" class="input">
+                <option value="">—</option>
+                <option value="FEMALE">أنثى</option>
+                <option value="MALE">ذكر</option>
+              </select>
+              <span class="field__hint" data-hint="اختياري">اختياري</span>
+            </div>
+          </div>
+          <div><button type="submit" class="btn btn--primary">إنشاء الملف</button></div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

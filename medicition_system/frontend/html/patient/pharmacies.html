@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>الصيدليات · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="/js/patient/pharmacies.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <header class="page-head">
+      <div>
+        <h1>الصيدليات</h1>
+        <div class="page-head__sub">كل الصيدليات المعتمدة في المنصة، الأقرب إلى موقعك أولًا. افتح صيدلية لترى موقعها وأدويتها</div>
+      </div>
+    </header>
+    <div id="rx-note" class="section" hidden></div>
+    <div class="card section">
+      <div class="search-box stack">
+        <div id="whereami"></div>
+        <div class="field">
+          <label class="field__label" for="q">ابحث عن صيدلية</label>
+          <div class="field__control field__control--icon">
+            <span class="field__icon"><i data-icon="search"></i></span>
+            <input id="q" class="input" placeholder="اسم الصيدلية أو المدينة أو الحي" autocomplete="off">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="split split--even">
+      <div class="stack" id="list"></div>
+      <div>
+        <div class="card map-card"><div id="map"></div></div>
+        <p class="tiny muted" style="margin-top: 8px" id="map-note"></p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

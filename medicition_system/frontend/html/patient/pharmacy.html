@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>صيدلية · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="/js/patient/pharmacy.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <div>
+      <a class="back-link" href="/patient/pharmacies"><i data-icon="chevron_right"></i>الصيدليات</a>
+      <header class="page-head" id="head" hidden>
+        <div>
+          <h1 id="name"></h1>
+          <div class="page-head__sub" id="address"></div>
+        </div>
+        <div class="page-head__actions" id="actions"></div>
+      </header>
+    </div>
+    <div id="state"></div>
+    <div id="profile-alert" class="section" hidden></div>
+
+    <div class="split split--aside-first" id="content" hidden>
+      <!-- الصيدلية: بُعدها عن المريض، موقعها على الخريطة، وعنوانها وهاتفها -->
+      <aside>
+        <div class="card">
+          <div class="card__body stack">
+            <div id="distance" hidden></div>
+            <div id="whereami"></div>
+            <div class="map-box map-box--pick"><div id="map"></div></div>
+            <div id="facts"></div>
+            <!-- [خارجي] رابط إلى موقع OpenStreetMap (ليس Google) لمن يريد رؤية الطريق بنفسه -->
+            <a class="small external" id="osm" target="_blank" rel="noreferrer">فتح موقع الصيدلية في OpenStreetMap <i data-icon="external_link" data-size="14"></i></a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- أدوية الصيدلية بالتصنيف: السعر ومتوفر أو غير متوفر، بلا كميات -->
+      <section class="section">
+        <div class="section__head"><h2>أدوية هذه الصيدلية</h2></div>
+        <div class="card">
+          <div class="search-box stack">
+            <div class="field">
+              <div class="field__control field__control--icon">
+                <span class="field__icon"><i data-icon="search"></i></span>
+                <input id="q" class="input" aria-label="اسم الدواء" placeholder="هل دواؤك متوفر هنا؟ اكتب اسمه التجاري أو العلمي" autocomplete="off">
+              </div>
+            </div>
+            <div id="chips"></div>
+          </div>
+          <div id="offers"></div>
+        </div>
+        <p class="tiny muted" style="margin-top: 8px">السعر للعلبة الواحدة ويُثبَّت لحظة إرسال الطلب. الدفع والاستلام من الصيدلية مباشرة.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

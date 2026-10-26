@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>إنشاء حساب · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/register.js"></script>
+</head>
+<body class="is-loading">
+  <main class="auth__panel">
+    <div class="card auth__card">
+      <h1>إنشاء حساب</h1>
+      <p class="auth__sub" id="subtitle">بريدك أو رقم هاتفك وكلمة مرور، وتبدأ مباشرة</p>
+      <form class="stack" id="form" novalidate>
+        <div id="error" hidden></div>
+        <div class="field">
+          <span class="field__label">نوع الحساب</span>
+          <div class="segmented segmented--block" role="group" aria-label="نوع الحساب" id="account-type">
+            <button type="button" class="segmented__item is-active" aria-pressed="true" data-value="PATIENT"><i data-icon="user_round" data-size="17"></i>مريض</button>
+            <button type="button" class="segmented__item" aria-pressed="false" data-value="PHARMACY"><i data-icon="store" data-size="17"></i>صيدلية</button>
+          </div>
+        </div>
+        <div class="segmented segmented--sm" role="group" aria-label="طريقة التسجيل" id="channel">
+          <button type="button" class="segmented__item is-active" aria-pressed="true" data-value="email"><i data-icon="mail" data-size="16"></i>بالبريد الإلكتروني</button>
+          <button type="button" class="segmented__item" aria-pressed="false" data-value="phone"><i data-icon="phone" data-size="16"></i>برقم الهاتف</button>
+        </div>
+        <div class="field" data-field="identifier">
+          <label class="field__label" for="identifier"><span id="identifier-label">البريد الإلكتروني</span><span class="field__req" aria-hidden="true">*</span></label>
+          <div class="field__control">
+            <input id="identifier" type="email" class="input" placeholder="name@example.com" autocomplete="email" dir="ltr" required aria-describedby="identifier-hint">
+          </div>
+          <span class="field__hint" id="identifier-hint" data-hint=""></span>
+        </div>
+        <div class="field" data-field="password">
+          <label class="field__label" for="password">كلمة المرور<span class="field__req" aria-hidden="true">*</span></label>
+          <div class="field__control field__control--suffix">
+            <input id="password" type="password" class="input" autocomplete="new-password" dir="ltr" minlength="8" maxlength="128" required>
+            <span class="field__suffix"><button type="button" class="icon-btn" data-action="toggle-password" aria-label="إظهار" title="إظهار" aria-pressed="false"><i data-icon="eye"></i></button></span>
+          </div>
+          <span class="field__hint" data-hint="8 أحرف على الأقل">8 أحرف على الأقل</span>
+        </div>
+        <div class="field" data-field="confirm">
+          <label class="field__label" for="confirm">تأكيد كلمة المرور<span class="field__req" aria-hidden="true">*</span></label>
+          <div class="field__control field__control--suffix">
+            <input id="confirm" type="password" class="input" autocomplete="new-password" dir="ltr" required>
+            <span class="field__suffix"><button type="button" class="icon-btn" data-action="toggle-password" aria-label="إظهار" title="إظهار" aria-pressed="false"><i data-icon="eye"></i></button></span>
+          </div>
+          <span class="field__hint" data-hint=""></span>
+        </div>
+        <button type="submit" class="btn btn--primary btn--lg btn--block" disabled>إنشاء الحساب</button>
+        <p class="small center">لديك حساب؟ <a href="/login">سجّل الدخول</a></p>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# أسرار وإعدادات محلية
+.env
+.env.*
+!.env.example
+*.local
+
+# مفاتيح JWT المحلية
+services/auth-service/keys/*.pem
+
+# ملفات وقت التشغيل: السجلات، ووثائق الصيدليات المرفوعة
+var/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+*.log
+.idea/
+.vscode/
+.DS_Store

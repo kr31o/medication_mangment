@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>الجرعات · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/patient/doses.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <header class="page-head">
+      <div>
+        <h1>الجرعات</h1>
+        <div class="page-head__sub">سجّل جرعاتك في وقتها لتحصل على ملخص دقيق عن التزامك</div>
+      </div>
+    </header>
+
+    <div class="grid grid--4" id="stats"></div>
+    <div id="meter" style="height: 22px"></div>
+
+    <div class="card section">
+      <div class="card__body">
+        <div class="day-nav">
+          <button type="button" class="icon-btn" id="previous" aria-label="اليوم السابق" title="اليوم السابق"><i data-icon="chevron_right" data-size="22"></i></button>
+          <div class="day-nav__label" id="day-label"></div>
+          <button type="button" class="icon-btn" id="next" aria-label="اليوم التالي" title="اليوم التالي"><i data-icon="chevron_left" data-size="22"></i></button>
+        </div>
+        <div id="doses"></div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section__head"><h2>آخر ما سُجّل</h2></div>
+      <div class="card" id="history"></div>
+    </section>
+  </main>
+</body>
+</html>

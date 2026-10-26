@@ -1,0 +1,1644 @@
+/*
+ * تخطيط الصفحات: الإطار (قائمة جانبية + شريط علوي + شريط سفلي للجوال)،
+ * صفحات الدخول، والعناصر الخاصة بصفحات بعينها (شريط الحبوب، مسار الطلب، الخريطة...).
+ */
+
+/* ------------------------------------------------------------------ الشعار */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+}
+.brand:hover {
+  text-decoration: none;
+}
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  background: var(--green-600);
+  box-shadow: 0 6px 14px rgba(11, 125, 87, 0.3);
+}
+.brand__capsule {
+  width: 23px;
+  height: 11px;
+  border-radius: var(--pill);
+  background: linear-gradient(90deg, #ffc857 50%, #fff 50%);
+  transform: rotate(-38deg);
+}
+.brand__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.08rem;
+}
+
+/* ------------------------------------------------------------------ الإطار */
+
+.shell {
+  min-height: 100vh;
+}
+.shell__content {
+  margin-inline-start: var(--sidebar-w);
+  min-width: 0;
+}
+
+.sidebar {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-w);
+  padding: 18px 14px 14px;
+  background: var(--surface);
+  border-inline-end: 1px solid var(--line);
+}
+.sidebar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 8px 18px;
+}
+.sidebar__close {
+  display: none;
+}
+.sidebar__foot {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+}
+.nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: none;
+  color: var(--ink-2);
+  font-weight: 500;
+  text-align: start;
+  transition:
+    background-color 0.18s,
+    color 0.18s,
+    transform 0.18s var(--ease);
+}
+.nav__item:hover {
+  background: var(--green-50);
+  color: var(--green-800);
+  text-decoration: none;
+}
+.nav__item svg {
+  flex-shrink: 0;
+  transition: transform 0.25s var(--spring);
+}
+.nav__item:hover svg {
+  transform: scale(1.12);
+}
+.nav__item.active {
+  background: var(--green-100);
+  color: var(--green-800);
+  font-weight: 700;
+}
+/* علامة كبسولة بجانب الصفحة الحالية */
+.nav__item.active::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 4px;
+  top: 50%;
+  width: 4px;
+  height: 22px;
+  margin-top: -11px;
+  border-radius: var(--pill);
+  background: var(--green-600);
+}
+.nav__item--logout:hover {
+  background: var(--coral-100);
+  color: var(--coral-700);
+}
+/* [قرار المستخدم] عدد الرسائل غير المقروءة بجانب «الرسائل» */
+.nav__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  margin-inline-start: auto;
+  padding: 0 6px;
+  border-radius: var(--pill);
+  background: var(--coral-500);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.bottom-nav__item {
+  position: relative;
+}
+.bottom-nav__item .nav__count {
+  position: absolute;
+  top: 0;
+  inset-inline-start: calc(50% + 8px);
+  min-width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0 4px;
+  border: 2px solid #fff;
+  font-size: 0.66rem;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 10px;
+}
+.who__avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--green-700);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--topbar-h);
+  padding: 0 28px;
+  background: rgba(242, 247, 244, 0.86);
+  backdrop-filter: blur(12px);
+}
+.topbar__menu,
+.topbar__brand {
+  display: none;
+}
+.topbar__date {
+  color: var(--ink-3);
+  font-size: 0.9rem;
+}
+
+.bell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  transition:
+    transform 0.18s var(--ease),
+    border-color 0.18s,
+    color 0.18s;
+}
+.bell:hover {
+  text-decoration: none;
+  border-color: var(--green-500);
+  color: var(--green-700);
+  transform: translateY(-1px);
+}
+.bell.is-ringing svg {
+  transform-origin: 50% 10%;
+  animation: bell 0.9s var(--ease);
+}
+.bell__count {
+  position: absolute;
+  top: -4px;
+  inset-inline-end: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 21px;
+  height: 21px;
+  padding: 0 5px;
+  border: 2px solid var(--paper);
+  border-radius: var(--pill);
+  background: var(--coral-500);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  animation: pop-in 0.3s var(--spring) both;
+}
+
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 6px 28px 56px;
+}
+/* حركة دخول الصفحة: أقسامها تصعد واحدًا بعد الآخر */
+.page > * {
+  animation: rise 0.5s var(--ease) both;
+}
+.page > *:nth-child(2) {
+  animation-delay: 60ms;
+}
+.page > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+.page > *:nth-child(4) {
+  animation-delay: 180ms;
+}
+.page > *:nth-child(n + 5) {
+  animation-delay: 240ms;
+}
+
+.shell__scrim,
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .shell__content {
+    margin-inline-start: 0;
+  }
+  .sidebar {
+    z-index: 50;
+    width: min(300px, 86vw);
+    box-shadow: var(--shadow-3);
+    transform: translateX(105%);
+    visibility: hidden;
+    transition:
+      transform 0.32s var(--ease),
+      visibility 0s linear 0.32s;
+  }
+  .sidebar.is-open {
+    transform: none;
+    visibility: visible;
+    transition:
+      transform 0.32s var(--ease),
+      visibility 0s;
+  }
+  .sidebar__close {
+    display: inline-grid;
+  }
+  .shell__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: rgba(9, 32, 26, 0.5);
+    animation: fade 0.2s ease-out both;
+  }
+  .topbar {
+    padding: 0 14px;
+    height: 60px;
+  }
+  .topbar__menu {
+    display: inline-grid;
+  }
+  .topbar__brand {
+    display: block;
+  }
+  .topbar__date {
+    display: none;
+  }
+  .page {
+    padding: 6px 16px 104px;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 35;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+  }
+  .bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 2px;
+    border: 0;
+    border-radius: var(--r-md);
+    background: none;
+    color: var(--ink-3);
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .bottom-nav__item:hover {
+    text-decoration: none;
+  }
+  .bottom-nav__item svg {
+    width: 52px;
+    height: 30px;
+    padding: 5px 0;
+    border-radius: var(--pill);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .bottom-nav__item.active {
+    color: var(--green-800);
+  }
+  .bottom-nav__item.active svg {
+    background: var(--green-100);
+    color: var(--green-700);
+  }
+}
+
+/* ------------------------------------------------------------------ صفحات الدخول */
+
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  min-height: 100vh;
+}
+.auth__hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  padding: 64px clamp(32px, 5vw, 76px);
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(150deg, #0c8a60 0%, #0a6a5a 52%, #0b4b5a 100%);
+}
+.auth__hero .brand {
+  color: #fff;
+}
+.auth__hero .brand__mark {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: none;
+}
+.auth__headline {
+  position: relative;
+  z-index: 1;
+  max-width: 13ch;
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.3;
+}
+.auth__lead {
+  position: relative;
+  z-index: 1;
+  max-width: 40ch;
+  font-size: 1.06rem;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.86);
+}
+.auth__points {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.auth__points li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+.auth__points span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* كبسولات تطفو في خلفية صفحة الدخول */
+.floaty {
+  position: absolute;
+  width: var(--w, 120px);
+  height: calc(var(--w, 120px) * 0.44);
+  border-radius: var(--pill);
+  background: linear-gradient(90deg, var(--a, #ffc857) 50%, rgba(255, 255, 255, 0.92) 50%);
+  box-shadow:
+    inset 0 -8px 14px rgba(0, 0, 0, 0.12),
+    0 18px 30px rgba(0, 0, 0, 0.18);
+  animation: float var(--t, 7s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+.floaty--round {
+  height: var(--w, 60px);
+  border-radius: 50%;
+  background: var(--a, #fff);
+}
+.floaty--round::after {
+  content: "";
+  position: absolute;
+  inset: 46% 22%;
+  border-radius: var(--pill);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.auth__panel {
+  display: grid;
+  place-items: center;
+  padding: 28px 20px;
+}
+.auth__card {
+  width: 100%;
+  max-width: 460px;
+  padding: clamp(22px, 4vw, 36px);
+  animation: pop-in 0.45s var(--ease) both;
+}
+.auth__card h1 {
+  font-size: 1.6rem;
+}
+.auth__sub {
+  margin: 4px 0 22px;
+  color: var(--ink-2);
+}
+@media (max-width: 900px) {
+  .auth {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+  .auth__hero {
+    padding: 26px 22px 30px;
+    gap: 10px;
+  }
+  .auth__headline {
+    max-width: none;
+    font-size: 1.5rem;
+  }
+  .auth__lead,
+  .auth__points {
+    display: none;
+  }
+  /* على الجوال تبقى كبسولة واحدة صغيرة بعيدة عن النص */
+  .auth__hero .floaty {
+    display: none;
+  }
+  .auth__hero .floaty:first-of-type {
+    display: block;
+    --w: 84px !important;
+    top: 22% !important;
+    left: 6% !important;
+  }
+  .auth__panel {
+    place-items: start center;
+    padding: 0 14px 28px;
+    margin-top: -14px;
+  }
+}
+
+/* ------------------------------------------------------------------ لافتة الترحيب */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 26px 28px;
+  overflow: hidden;
+  border-radius: var(--r-xl);
+  color: #fff;
+  background: linear-gradient(135deg, #0c8a60 0%, #0a6a5a 58%, #0b4f5c 100%);
+  box-shadow: 0 16px 36px rgba(11, 125, 87, 0.26);
+}
+.hero h1,
+.hero p,
+.hero .btn {
+  position: relative;
+  z-index: 1;
+}
+.hero p {
+  color: rgba(255, 255, 255, 0.85);
+}
+.hero .floaty {
+  opacity: 0.9;
+}
+.hero--plain {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-1);
+}
+
+/* ------------------------------------------------------------------ شريط الحبوب: جرعات اليوم */
+
+.blister {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  /* رقائق الألمنيوم خلف الحبوب */
+  background: repeating-linear-gradient(135deg, #e6efea 0 7px, #f3f8f5 7px 14px);
+}
+.blister__cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: #fff;
+  background: radial-gradient(circle at 34% 28%, #fff 0%, #e3ede8 72%);
+  box-shadow:
+    inset 0 -3px 5px rgba(15, 42, 35, 0.12),
+    0 1px 2px rgba(15, 42, 35, 0.12);
+  transition: background 0.3s;
+}
+.blister__cell svg {
+  stroke-width: 3;
+}
+.blister__pill {
+  width: 26px;
+  height: 12px;
+  border-radius: var(--pill);
+  background: linear-gradient(90deg, var(--green-500) 50%, #fff 50%);
+  box-shadow: 0 2px 3px rgba(15, 42, 35, 0.25);
+  transform: rotate(-35deg);
+}
+.blister__cell.is-DUE {
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+.blister__cell.is-DUE .blister__pill {
+  background: linear-gradient(90deg, var(--blue-500) 50%, #fff 50%);
+}
+.blister__cell.is-OVERDUE .blister__pill {
+  background: linear-gradient(90deg, var(--amber-500) 50%, #fff 50%);
+}
+/* حبة أُخذت: الخانة مفتوحة وعليها علامة صح */
+.blister__cell.is-TAKEN {
+  background: var(--green-600);
+  box-shadow: none;
+}
+.blister__cell.is-MISSED {
+  background: var(--coral-100);
+  color: var(--coral-600);
+  box-shadow: inset 0 0 0 2px #f3b6ad;
+}
+.blister__cell.is-SKIPPED {
+  background: transparent;
+  color: var(--ink-3);
+  box-shadow: inset 0 0 0 2px var(--line-strong);
+}
+
+/* صف جرعة */
+.dose {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.dose:last-child {
+  border-bottom: 0;
+  padding-bottom: 2px;
+}
+.dose:first-child {
+  padding-top: 2px;
+}
+.dose__bubble {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--slate-100);
+  color: var(--ink-3);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+.dose.is-DUE .dose__bubble {
+  background: var(--blue-100);
+  color: var(--blue-700);
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+.dose.is-OVERDUE .dose__bubble {
+  background: var(--amber-100);
+  color: var(--amber-700);
+}
+.dose.is-TAKEN .dose__bubble {
+  background: var(--green-600);
+  color: #fff;
+}
+.dose.is-MISSED .dose__bubble {
+  background: var(--coral-100);
+  color: var(--coral-600);
+}
+.dose.just-recorded .dose__bubble {
+  animation: pill-pop 0.5s var(--spring);
+}
+.dose.just-recorded .dose__bubble svg {
+  animation: check-draw 0.45s var(--spring) 0.12s both;
+}
+.dose__time {
+  min-width: 74px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.dose__info {
+  flex: 1 1 170px;
+  min-width: 0;
+}
+.dose__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ------------------------------------------------------------------ مسار الطلب */
+
+.track {
+  position: relative;
+  padding-top: 4px;
+}
+.track__rail {
+  position: absolute;
+  top: 20px;
+  /* من مركز المحطة الأولى إلى مركز الأخيرة: لكل محطة عمود، فالمركز الأول عند نصف عرض العمود
+     (ربع العرض لمحطتين، وثُمنه لأربع في طلب الوصفة). */
+  inset-inline: calc(50% / var(--stops, 2));
+  height: 10px;
+  border-radius: var(--pill);
+  background: var(--slate-100);
+  overflow: hidden;
+}
+.track__fill {
+  width: var(--value, 0%);
+  height: 100%;
+  border-radius: var(--pill);
+  background: linear-gradient(270deg, var(--green-600), var(--green-500));
+  transition: width 1s var(--ease);
+  animation: meter-grow 1s var(--ease);
+}
+.track__stops {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--stops, 2), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.track__stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.track__dot {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-3);
+  transition: all 0.4s var(--ease);
+}
+.track__label {
+  padding: 0 2px;
+  color: var(--ink-3);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.track__stop.is-done .track__dot {
+  border-color: var(--green-600);
+  background: var(--green-600);
+  color: #fff;
+}
+.track__stop.is-current .track__dot {
+  border-color: var(--blue-500);
+  background: var(--blue-100);
+  color: var(--blue-700);
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+.track__stop.is-done .track__label,
+.track__stop.is-current .track__label {
+  color: var(--ink);
+}
+.track.is-ended .track__fill {
+  background: var(--line-strong);
+}
+.track.is-ended .track__stop.is-done .track__dot {
+  border-color: var(--ink-3);
+  background: var(--ink-3);
+}
+.track__ended {
+  margin-top: 16px;
+}
+
+@media (max-width: 560px) {
+  .track__dot {
+    width: 36px;
+    height: 36px;
+  }
+  .track__rail {
+    top: 17px;
+  }
+  .track__label {
+    font-size: 0.7rem;
+  }
+}
+
+/* سجل الحالة كخط زمني */
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline__item {
+  --tone: var(--ink-3);
+  position: relative;
+  padding-inline-start: 28px;
+  padding-bottom: 18px;
+}
+.timeline__item:last-child {
+  padding-bottom: 0;
+}
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  inset-inline-start: 4px;
+  width: 12px;
+  height: 12px;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--tone);
+  box-shadow: 0 0 0 2px var(--tone);
+}
+.timeline__item::after {
+  content: "";
+  position: absolute;
+  top: 26px;
+  bottom: 0;
+  inset-inline-start: 9px;
+  width: 2px;
+  background: var(--line);
+}
+.timeline__item:last-child::after {
+  display: none;
+}
+.timeline__item--amber {
+  --tone: var(--amber-500);
+}
+.timeline__item--blue {
+  --tone: var(--blue-500);
+}
+.timeline__item--green,
+.timeline__item--primary {
+  --tone: var(--green-500);
+}
+.timeline__item--coral {
+  --tone: var(--coral-500);
+}
+.timeline__item--violet {
+  --tone: var(--violet-500);
+}
+
+.total {
+  color: var(--green-700);
+  font-size: 1.05rem;
+}
+
+/* ------------------------------------------------------------------ البحث عن دواء */
+
+.search-box {
+  padding: 22px;
+}
+.result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.tile {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: var(--green-100);
+  color: var(--green-700);
+}
+.tile--amber {
+  background: var(--amber-100);
+  color: var(--amber-700);
+}
+.tile--violet {
+  background: var(--violet-100);
+  color: var(--violet-700);
+}
+.tile--blue {
+  background: var(--blue-100);
+  color: var(--blue-700);
+}
+.tile--neutral {
+  background: var(--slate-100);
+  color: var(--ink-3);
+}
+
+.map-card {
+  position: sticky;
+  top: calc(var(--topbar-h) + 12px);
+  height: calc(100vh - var(--topbar-h) - 70px);
+  min-height: 360px;
+  overflow: hidden;
+}
+.map-box {
+  height: 280px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+@media (max-width: 900px) {
+  .map-card {
+    position: static;
+    height: 340px;
+  }
+}
+
+.pharmacy-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 18px 12px;
+  border: 0;
+  background: none;
+  text-align: start;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  transition: background-color 0.15s;
+}
+.pharmacy-card__top:hover {
+  background: var(--green-50);
+}
+.rank {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--green-600);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+.price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--green-700);
+  white-space: nowrap;
+}
+.pharmacy-card__foot {
+  padding: 0 18px 16px;
+}
+.meta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-3);
+  font-size: 0.875rem;
+}
+
+/* سطر دواء داخل نافذة الطلب */
+.line {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.line .field {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ أدويتي */
+
+.med-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  padding: 18px;
+}
+.qty {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--green-700);
+}
+.qty--low {
+  color: var(--amber-700);
+}
+.inline-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.inline-form .field {
+  flex: 1;
+}
+.time-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+.time-row .field {
+  flex: 1;
+}
+.time-row > .icon-btn {
+  margin-bottom: 4px;
+}
+
+/* ------------------------------------------------------------------ اليوم في صفحة الجرعات */
+
+.day-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.day-nav__label {
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ الملخصات (بنفسجي) */
+
+.insight {
+  border-inline-start: 5px solid var(--violet-500);
+}
+.insight__text {
+  font-size: 1.04rem;
+  line-height: 2;
+}
+.insight__why {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: var(--violet-100);
+  animation: rise 0.3s var(--ease) both;
+}
+
+/* ------------------------------------------------------------------ الإشعارات */
+
+.notif {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 20px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: start;
+  transition: background-color 0.15s;
+}
+.notif:last-child {
+  border-bottom: 0;
+}
+.notif:hover {
+  background: var(--green-50);
+}
+.notif.is-unread {
+  background: var(--green-50);
+}
+.notif__dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.notif.is-unread .notif__dot {
+  background: var(--green-500);
+}
+.notif.is-unread.is-high .notif__dot {
+  background: var(--coral-500);
+  animation: pulse-green 1.6s ease-out infinite;
+}
+
+.suspended-reason {
+  display: block;
+  margin-top: 4px;
+}
+
+/* ------------------------------------------------------------------ المخزون */
+
+/* دواء أوقفته الصيدلية: الصف باهت، لكن شارته وزر تفعيله يبقيان واضحين */
+.table tr.is-stopped td:not([data-label="الحالة"]):not(.cell-actions) {
+  opacity: 0.55;
+}
+.stop-cell {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 16px;
+}
+.toolbar .field {
+  flex: 1 1 240px;
+  max-width: 380px;
+}
+.price-edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.price-edit .input {
+  width: 104px;
+}
+.delta-plus {
+  color: var(--green-700);
+}
+.delta-minus {
+  color: var(--coral-700);
+}
+.code {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border-radius: var(--r-md);
+  background: #0f2a23;
+  color: #d9f2e6;
+  font:
+    0.8125rem/1.7 ui-monospace,
+    "Cascadia Code",
+    Consolas,
+    monospace;
+  text-align: left;
+  direction: ltr;
+  animation: rise 0.25s var(--ease) both;
+}
+
+.doc {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.doc:last-child {
+  border-bottom: 0;
+}
+
+/* ------------------------------------------------------------------ متفرقات */
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 100vh;
+  padding: 24px;
+  text-align: center;
+}
+.not-found__code {
+  font-size: clamp(4rem, 14vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--green-600);
+}
+
+.hero .badge {
+  position: relative;
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------------ مكان الصيدلية ومنطقة المريض */
+
+.place-box {
+  padding: 18px;
+  border: 1.5px solid var(--green-300);
+  border-radius: var(--r-lg);
+  background: var(--green-50);
+}
+.place-box .map-box {
+  background: var(--surface);
+}
+/* خريطة للعرض فقط داخل بطاقة معلومات (صفحة الصيدلية عند الأدمن) */
+.map-box--static {
+  height: 220px;
+  margin-top: 16px;
+}
+/* خريطة تحديد النقطة: أكبر، ومؤشرها يقول «اضغط هنا» */
+.map-box--pick {
+  height: 340px;
+}
+.map-box--pick .leaflet-container:not([data-blank]) {
+  cursor: crosshair;
+}
+.map-box--pick .leaflet-marker-draggable {
+  cursor: grab;
+}
+.paste-error {
+  color: var(--coral-700);
+}
+
+/* ------------------------------------------------------------------ الصيدليات للمريض */
+
+/* صفحة الصيدلية: الموقع والمسافة أولًا (العمود الجانبي)، ثم أدويتها */
+@media (min-width: 901px) {
+  .split--aside-first {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+.split--aside-first > .section {
+  margin-top: 0;
+}
+.pharmacy-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+}
+.distance {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.distance__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.3rem;
+  line-height: 1.1;
+  color: var(--green-700);
+  white-space: nowrap;
+}
+.distance__label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.distance--sm {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+.distance--sm .distance__value {
+  font-size: 1.15rem;
+}
+.offer {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+/* اسم الدواء يلتفّ داخل عموده، فيبقى السعر وزر الطلب على السطر نفسه ما وسعهما العرض */
+.offer > .result {
+  flex: 1 1 230px;
+  min-width: 0;
+}
+.offer__side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+.offer__price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.25;
+}
+.external {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pharmacy-card__foot--actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pharmacy-card__foot--actions > :first-child {
+  flex: 1;
+}
+
+/* ملخص الالتزام: عنوان صغير فوق تفاصيل وقت اليوم والدواء */
+.insight__why .insight__group {
+  margin-block: 10px 2px;
+}
+
+/* [قرار المستخدم] بدائل بنفس التركيبة تحت نتيجة بحث فارغة في صفحة صيدلية */
+.alternatives-here {
+  border-top: 1px solid var(--line);
+}
+.alternatives-here__for {
+  padding: 14px 20px 2px;
+}
+
+/* ------------------------------------------------------------------ [قرار المستخدم] الوصفة بالصورة */
+
+.btn--tall {
+  min-height: 48px;
+}
+.rx-photo {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--sunken);
+}
+.rx-photo img {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+}
+.rx-photo__hint {
+  position: absolute;
+  bottom: 10px;
+  inset-inline-end: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--pill);
+  background: rgba(15, 42, 35, 0.74);
+  color: #fff;
+  font-size: 0.75rem;
+}
+.rx-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rx-drop {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--sunken);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.rx-drop:hover,
+.rx-drop:focus-visible {
+  border-color: var(--green-500);
+  background: var(--green-50);
+}
+.rx-drop__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 16px;
+  text-align: center;
+}
+.rx-drop__image {
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: var(--r-md);
+  object-fit: contain;
+}
+
+/* طريقة الاستعمال تحت الصنف، وما ليس عند الصيدلية */
+.dose-plan {
+  margin-top: 6px;
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  background: var(--blue-100);
+  color: var(--blue-700);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.dose-plan__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+.missing-list {
+  margin: 6px 0 0;
+  padding-inline-start: 18px;
+}
+.missing-list li {
+  margin: 2px 0;
+}
+
+/* عرض الوصفة: نتائج البحث في المخزون والأدوية المختارة */
+.quote-results,
+.quote-lines {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+.quote-results .row,
+.quote-line {
+  padding: 10px 14px;
+}
+.quote-line {
+  flex-wrap: wrap;
+}
+.quote-line__qty {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 84px;
+}
+.quote-total {
+  padding-top: 10px;
+  border-top: 1px dashed var(--line-strong);
+}
+.chip-removable {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-block: 4px;
+  padding-inline: 12px 6px;
+  border-radius: var(--pill);
+  background: var(--amber-100);
+  color: var(--amber-700);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.chip-removable button {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.chip-removable button:hover {
+  background: rgba(138, 82, 0, 0.12);
+}
+
+/* ------------------------------------------------------------------ [قرار المستخدم] الرسائل */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.chat__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.chat__back {
+  display: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sunken);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.chat__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 220px;
+  max-height: 420px;
+  padding: 16px;
+  overflow-y: auto;
+  background: var(--sunken);
+  overscroll-behavior: contain;
+}
+.chat--page .chat__messages {
+  height: calc(100dvh - 330px);
+  min-height: 300px;
+  max-height: none;
+}
+.chat__empty {
+  margin: auto;
+  text-align: center;
+}
+.chat__older {
+  display: flex;
+  justify-content: center;
+}
+/* رسائل الطرف الآخر في بداية السطر، ورسائلك في نهايته (كما في تطبيقات المحادثة بالعربية) */
+.bubble {
+  align-self: flex-start;
+  max-width: min(78%, 520px);
+  padding: 8px 12px 6px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  border-start-start-radius: 4px;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+}
+.bubble--mine {
+  align-self: flex-end;
+  border-color: var(--green-300);
+  border-start-start-radius: 16px;
+  border-start-end-radius: 4px;
+  background: var(--green-100);
+}
+.bubble__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.bubble__time {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-3);
+  font-size: 0.7rem;
+}
+.chat__compose {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.chat__compose textarea {
+  flex: 1;
+  min-height: 46px;
+  max-height: 140px;
+  resize: none;
+}
+.chat__send {
+  min-height: 46px;
+}
+
+.chat-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.chat-layout > * {
+  min-width: 0;
+}
+.chat-list {
+  max-height: calc(100dvh - 230px);
+  overflow-y: auto;
+}
+.chat-item {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 12px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.chat-item:hover {
+  background: var(--green-50);
+}
+.chat-item.is-active {
+  background: var(--green-100);
+}
+.chat-item.is-unread .chat-item__name {
+  font-weight: 800;
+}
+.chat-item__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.chat-item__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.chat-item__preview {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.chat-item .nav__count {
+  align-self: center;
+}
+
+@media (max-width: 900px) {
+  .chat-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chat-layout.has-thread .chat-layout__list,
+  .chat-layout:not(.has-thread) .chat-layout__thread {
+    display: none;
+  }
+  .chat__back {
+    display: grid;
+  }
+  /* فوق الشريط السفلي: حقل الكتابة يبقى ظاهرًا */
+  .chat--page .chat__messages {
+    height: calc(100dvh - 430px);
+    min-height: 240px;
+  }
+  .chat-list {
+    max-height: none;
+  }
+}
+
+/* موافقة المريض على عرض الصيدلية لوصفته */
+.quote-decision {
+  border-top: 1px solid var(--line);
+  background: var(--violet-100);
+}
+
+/* ------------------------------------------------------------------ [قرار المستخدم] البديل تحت الدواء الذي بُحث عنه */
+
+.alt-of {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+  color: var(--blue-700);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.row.is-alt,
+.pick.is-alt {
+  padding-inline-start: 44px;
+  background: var(--sunken);
+}
+.pick.is-alt.is-picked {
+  background: var(--green-50);
+}
+.alt-more {
+  display: block;
+  width: 100%;
+  padding: 8px 20px 10px 44px;
+  padding-inline: 44px 20px;
+  border: 0;
+  background: var(--sunken);
+  color: var(--blue-700);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+}
+.alt-more:hover {
+  text-decoration: underline;
+}
+@media (max-width: 560px) {
+  /* على الهاتف: تصنيف نتيجة البحث ظاهر في أزرار التصنيفات، فلا مكان له في السطر. */
+  .result__category {
+    display: none;
+  }
+  .row.is-alt,
+  .pick.is-alt {
+    padding-inline-start: 28px;
+  }
+  .alt-more {
+    padding-inline: 28px 16px;
+  }
+}

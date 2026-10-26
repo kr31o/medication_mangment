@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>تسجيل الدخول · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/login.js"></script>
+</head>
+<body class="is-loading">
+  <main class="auth__panel">
+    <div class="card auth__card">
+      <h1>تسجيل الدخول</h1>
+      <p class="auth__sub">أهلًا بعودتك</p>
+      <form class="stack" id="form" novalidate>
+        <div id="error" hidden></div>
+        <div class="field" data-field="identifier">
+          <label class="field__label" for="identifier">البريد الإلكتروني أو رقم الهاتف</label>
+          <div class="field__control">
+            <input id="identifier" class="input" autocomplete="username" dir="ltr" autofocus aria-describedby="identifier-hint">
+          </div>
+          <span class="field__hint" id="identifier-hint" data-hint=""></span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="password">كلمة المرور</label>
+          <div class="field__control field__control--suffix">
+            <input id="password" type="password" class="input" autocomplete="current-password" dir="ltr">
+            <span class="field__suffix"><button type="button" class="icon-btn" data-action="toggle-password" aria-label="إظهار" title="إظهار" aria-pressed="false"><i data-icon="eye"></i></button></span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary btn--lg btn--block" disabled>دخول</button>
+        <a href="/register" class="center">إنشاء حساب جديد</a>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>طلبات للإدارة · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/admin/requests.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <!-- [قرار المستخدم] طلبات المرضى والصيدليات: دواء ناقص أو دواء جديد، ورد الأدمن عليها -->
+    <header class="page-head">
+      <div>
+        <h1>طلبات للإدارة</h1>
+        <div class="page-head__sub">من المرضى والصيدليات: دواء موجود في القائمة لكنه ناقص، أو دواء غير موجود فيها. ردك يصل صاحب الطلب إشعارًا.</div>
+      </div>
+      <div class="page-head__actions">
+        <select id="type" class="input" aria-label="نوع الطلب">
+          <option value="">كل الأنواع</option>
+          <option value="SHORTAGE">دواء ناقص</option>
+          <option value="NEW_MEDICATION">دواء جديد</option>
+        </select>
+      </div>
+    </header>
+    <div id="tabs"></div>
+    <div id="list"></div>
+    <div id="pager"></div>
+  </main>
+</body>
+</html>

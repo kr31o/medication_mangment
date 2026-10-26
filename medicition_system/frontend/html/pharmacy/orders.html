@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>الطلبات · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/pharmacy/orders.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <!-- صيدلية لم تُعتمد بعد: ما يلزم لتبدأ -->
+    <div id="gate"></div>
+    <div id="content" hidden>
+      <header class="page-head">
+        <div>
+          <h1>الطلبات</h1>
+          <div class="page-head__sub">الطلبات الأقدم أولًا</div>
+        </div>
+      </header>
+      <div id="tabs"></div>
+      <div id="list"></div>
+      <div id="pager"></div>
+    </div>
+  </main>
+</body>
+</html>

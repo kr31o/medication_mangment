@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b7d57">
+  <title>صيدلية · منصة الأدوية</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script src="/vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="/js/admin/pharmacy.js"></script>
+</head>
+<body class="is-loading">
+  <main class="page">
+    <div>
+      <a class="back-link" href="/admin/pharmacies"><i data-icon="chevron_right"></i>الصيدليات</a>
+      <div id="head"></div>
+    </div>
+    <div id="state"></div>
+    <div id="alerts" class="stack stack--sm section" hidden></div>
+    <div class="split split--even" id="content" hidden>
+      <div>
+        <div class="card section">
+          <div class="card__body">
+            <div id="facts"></div>
+            <div class="map-box map-box--static"><div id="map"></div></div>
+          </div>
+        </div>
+        <section class="section">
+          <div class="section__head"><h2>الوثائق</h2></div>
+          <div class="card" id="documents"></div>
+        </section>
+      </div>
+      <div>
+        <section class="section">
+          <div class="section__head"><h2>سجل الحالة</h2></div>
+          <div class="card"><div class="card__body" id="history"></div></div>
+        </section>
+        <section class="section">
+          <div class="section__head"><h2 id="pharmacists-title">الصيادلة</h2></div>
+          <div class="card" id="pharmacists"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
